@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .leftWrapper {
+            float: left;
+            position: relative;
+            width: 350px;
+            height: 350px;
+        }
+        
+        .leftWrapper .mover {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            opacity: 0.5;
+            display: none;
+        }
+        
+        .rightWrapper {
+            float: left;
+            width: 400px;
+            height: 400px;
+            border: 1px solid #f00;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rightWrapper img {
+            width: 1400px;
+            height: 1400px;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="leftWrapper">
+        <img src="img/1_b.jpg" alt="">
+        <div class="mover"></div>
+    </div>
+    <div class="rightWrapper">
+        <img class="bgImg" src="img/1_c.jpg" alt="">
+    </div>
+    <script src="jquery.js"></script>
+    <script>
+        $(function() {
+            // 1.鼠标进入左侧区域，  
+            $(".leftWrapper").mouseover(function() {
+                // 2.移动方块需要显示
+                $(".mover").show();
+                $(".rightWrapper").show();
+            });
+
+            // 1鼠标进入移出区域
+            $(".leftWrapper").mouseout(function() {
+                // 2.移动方块需要显示
+                $(".mover").hide();
+                $(".rightWrapper").hide();
+            });
+
+
+            $(".leftWrapper").mousemove(function(e) {
+                // 鼠标相对于容器元素的偏移值
+                // console.log(e.offsetX);
+
+                var x1 = e.clientX,
+                    y1 = e.clientY;
+
+                // 鼠标相对于小移动方块的偏移值
+
+                var x2 = $(".mover").outerWidth() / 2,
+                    y2 = $(".mover").outerHeight() / 2;
+
+                // 小移动方块 的left &top
+                var x = x1 - x2,
+                    y = y1 - y2;
+
+                if (x < 0) {
+                    x = 0;
+                }
+
+                // 临街判断
+                var maxLeft = $(".leftWrapper").innerWidth() - $(".mover").outerWidth();
+                if (x > maxLeft) {
+                    x = maxLeft;
+                }
+
+                if (y < 0) {
+                    y = 0;
+                }
+                var maxTop = $(".leftWrapper").innerHeight() - $(".mover").outerHeight();
+                if (y > maxTop) {
+                    y = maxTop;
+                }
+
+                // 缩放比率
+                var rate = $(".mover").outerWidth() / $(".rightWrapper").innerWidth();
+
+                $(".mover").css({
+                    left: x,
+                    top: y
+                });
+
+                $(".bgImg").css({
+                    left: -x / rate,
+                    top: -y / rate
+                })
+
+            });
+
+        });
+    </script>
+</body>
+
+</html>
