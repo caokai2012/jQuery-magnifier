@@ -1,1 +1,2 @@
 # jQuery-magnifier
+# jQuery-magnifier
